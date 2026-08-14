@@ -2,9 +2,11 @@
 
 A modern, high-performance solution for extracting, normalizing, and faithfully rendering live German public broadcast Videotext/Teletext content (ARD Text, ZDF Text, 3sat Text, WDR Text, and HR Text).
 
-![Videotext Modern Architecture](https://img.shields.io/badge/Angular-22+-DD0031?logo=angular&logoColor=white)
+![Angular 22+](https://img.shields.io/badge/Angular-22+-DD0031?logo=angular&logoColor=white)
 ![Bun Runtime](https://img.shields.io/badge/Bun-1.3+-FBF0DF?logo=bun&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-Offline--Ready-5A0FC8?logo=pwa&logoColor=white)
 
 ---
 
@@ -24,30 +26,71 @@ A modern, high-performance solution for extracting, normalizing, and faithfully 
 * **In-Memory Cache & Polite Throttler**: TTL-based cache with request coalescing to prevent redundant network fetches.
 * **ANSI Terminal CLI & Bun HTTP API**: Instant colored terminal viewer and JSON REST API.
 
-### 🌐 Angular 22+ PWA Viewer (`packages/viewer`)
+### 🌐 Angular 22+ PWA Web Viewer (`packages/viewer`)
 * **Zoneless & Signals-first**: Modern Angular 22 standalone architecture with reactive signal stores.
 * **Authentic CRT Viewport Engine**:
   * Retro CRT television mode with scanlines, tube vignette curvature, phosphor glow, and flicker.
   * Modern pixel-sharp clean mode.
-* **Interactive Navigation**:
-  * Physical keyboard input (type `1`, `0`, `0` to jump; `R`, `G`, `Y`, `B` for Fast-Text; `M` for CRT mode; `F` for bookmark; `S` for search).
+* **📺 Full-Screen TV-Only Mode**:
+  * Minimalist edge-to-edge television view hiding all chrome controls (`[T]` or `Esc`).
+* **Interactive Navigation & Remote**:
+  * Physical keyboard input (type `1`, `0`, `0` to jump; `R`, `G`, `Y`, `B` for Fast-Text; `T` for TV-mode; `M` for CRT mode; `F` for bookmark; `S` for search).
   * On-screen retro TV remote numpad (0–9, DEL, CLR, Page ▲/▼, Sub ◀/▶).
   * Direct clickable 3-digit page links within page text.
 * **Sub-page Carousel**: Manual stepping, numbered pill buttons, and auto-rotation with an animated progress bar.
 * **Local-first Bookmarks & Search**: Pin favorite pages to local storage; search across featured indices and cached pages.
+* **PWA & Offline Ready**: Service Worker caching, manifest, and multi-resolution adaptive app icons.
 * **Web Audio Sound Effects**: Subtle mechanical remote clicks, frequency jump beeps, and CRT toggle chirps.
 
 ---
 
-## 🛠️ Quick Start
+## 🐳 How to Run (Docker)
+
+The application includes a unified multi-stage Docker container that runs both the backend scraper API and the Angular PWA Web Viewer on a single port.
+
+### Option 1: Docker Compose (Recommended)
+```bash
+# Start container in detached mode
+docker compose up -d
+
+# View container logs
+docker compose logs -f
+
+# Stop container
+docker compose down
+```
+
+### Option 2: Docker CLI
+```bash
+# Build local image
+docker build -t teletext-suite .
+
+# Run container on port 3000
+docker run -d -p 3000:3000 --name teletext-app --restart unless-stopped teletext-suite
+```
+
+### Option 3: Pre-built GitHub Container Registry Image
+```bash
+docker run -d -p 3000:3000 --name teletext-app ghcr.io/<owner>/teletext:latest
+```
+
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
+
+---
+
+## 🛠️ Local Development
 
 ### 1. Prerequisites
 * [Bun](https://bun.sh/) (v1.3+)
 * [Node.js](https://nodejs.org/) (v22+)
 
-### 2. Install Dependencies
+### 2. Install Dependencies & Build
 ```bash
+# Install workspace dependencies
 bun install
+
+# Build all packages (Core library + Angular Viewer)
+bun run build
 ```
 
 ### 3. Run the CLI Tool
@@ -75,23 +118,43 @@ bun cli zdf 100 --json
 bun cli --channels
 ```
 
-### 4. Start the API Server & Web Viewer
+### 4. Start the Unified Server Locally
 ```bash
-# Start backend API (http://localhost:3000)
+# Serves both the REST API (/api/*) and the compiled PWA web viewer
+bun server
+```
+Then visit [http://localhost:3000](http://localhost:3000).
+
+For hot-reloading Angular development:
+```bash
+# Terminal 1: Backend API
 bun server
 
-# In another terminal: start Angular PWA viewer (http://localhost:4200)
+# Terminal 2: Angular Dev Server
 cd packages/viewer && bun start
 ```
 
 ### 5. Running Tests
 ```bash
-# Run Core test suite (Grid, Parser, Mosaic, Providers)
-bun test --cwd packages/core
-
-# Run Angular Viewer test suite
-cd packages/viewer && bun run test -- --watch=false
+# Run unit & parser test suite
+bun run test
 ```
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Key | Action |
+|---|---|
+| `0` – `9` | Type 3-digit page number (e.g. `100`, `200`) |
+| `▲` / `▼` or `PgUp` / `PgDn` | Previous / Next Page |
+| `Shift + ◀` / `Shift + ▶` | Previous / Next Sub-page |
+| `R`, `G`, `Y`, `B` | FastText Red, Green, Yellow, Blue color jump |
+| `T` | Toggle **Full-Screen TV-Only Mode** |
+| `M` | Toggle **CRT Scanline / Pixel-Sharp Mode** |
+| `F` | Toggle Bookmark / Favorite for current page |
+| `S` or `/` | Open Search & Index Dialog |
+| `Esc` | Clear keypad buffer / Exit TV mode / Close search |
 
 ---
 
@@ -111,6 +174,11 @@ cd packages/viewer && bun run test -- --watch=false
 
 ```
 teletext/
+├── .github/
+│   └── workflows/
+│       └── docker-publish.yml # Automated CI & GHCR Docker publish workflow
+├── Dockerfile                 # Multi-stage container build (Node 22 + Bun)
+├── docker-compose.yml         # Container orchestration setup
 ├── BRIEF.md                   # Technical specification & broadcaster list
 ├── package.json               # Root monorepo workspace configuration
 ├── packages/
@@ -121,11 +189,11 @@ teletext/
 │   │   │   ├── cache/         # MemoryCache, CacheManager, Throttler
 │   │   │   ├── providers/     # ARD, ZDF, 3sat, WDR, HR provider adapters
 │   │   │   ├── cli/           # Terminal ANSI renderer & CLI binary
-│   │   │   └── server/        # Bun HTTP REST API server
-│   │   └── test/              # Bun test suite
+│   │   │   └── server/        # Bun HTTP REST API & static file server
+│   │   └── test/              # Bun unit test suite
 │   │
 │   └── viewer/                # Angular 22+ Standalone PWA
-│       ├── public/            # PWA manifest & assets
+│       ├── public/            # PWA manifest, service worker config & icon assets
 │       └── src/app/
 │           ├── core/          # Signals state, Audio synthesizer, Keypad & Storage
 │           └── components/    # TeletextScreen (CRT), Toolbar, FastText, Keypad, Bookmarks, Search
