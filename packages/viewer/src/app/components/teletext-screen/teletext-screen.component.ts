@@ -49,7 +49,22 @@ import type { TeletextCell } from '@teletext/core';
                       [attr.data-col]="c"
                       [attr.title]="cell.link ? 'Gehe zu Seite ' + cell.link : null"
                       (click)="onCellClick(cell)"
-                    >{{ cell.char || ' ' }}</span>
+                    >
+                      @if (cell.isGraphic && cell.mosaicMask !== undefined && cell.mosaicMask > 0) {
+                        <!-- Seamless 2x3 Sub-pixel Mosaic Grid -->
+                        <span class="mosaic-grid" aria-hidden="true">
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 0)"></span>
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 1)"></span>
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 2)"></span>
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 3)"></span>
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 4)"></span>
+                          <span class="m-px" [class.on]="isPixelOn(cell.mosaicMask, 5)"></span>
+                        </span>
+                        <span class="visually-hidden">{{ cell.char || ' ' }}</span>
+                      } @else {
+                        {{ cell.char || ' ' }}
+                      }
+                    </span>
                   }
                 </div>
               }
@@ -90,6 +105,11 @@ export class TeletextScreenComponent {
     const buf = this.teletext.keypadBuffer();
     return buf.padEnd(3, '—');
   });
+
+  public isPixelOn(mask: number | undefined, bit: number): boolean {
+    if (mask === undefined) return false;
+    return (mask & (1 << bit)) !== 0;
+  }
 
   public onCellClick(cell: TeletextCell): void {
     if (cell.link) {

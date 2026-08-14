@@ -5,7 +5,7 @@ import { normalizeTeletextColor } from '../models/colors';
 import { TELETEXT_COLUMNS, TELETEXT_ROWS, type TeletextPage } from '../models/page';
 import type { BroadcasterInfo, ProviderRequestOptions } from '../models/provider';
 import { decodeHtmlEntities, stripHtmlTags } from '../parser/html-sanitizer';
-import { zdfLineDrawToChar } from '../parser/mosaic';
+import { zdfLineDrawToCharAndMask } from '../parser/mosaic';
 import { parsePageNumber } from '../parser/link-extractor';
 
 export class ZDFProvider extends BaseProvider {
@@ -157,11 +157,13 @@ export class ZDFProvider extends BaseProvider {
 
           for (const ch of innerText) {
             if (isLineDraw) {
+              const { char: mosaicChar, mask } = zdfLineDrawToCharAndMask(ch);
               row.push({
-                char: zdfLineDrawToChar(ch),
+                char: mosaicChar,
                 fg,
                 bg,
                 isGraphic: true,
+                mosaicMask: mask,
                 link: linkPage || undefined,
               });
             } else {
@@ -173,11 +175,13 @@ export class ZDFProvider extends BaseProvider {
           const text = decodeHtmlEntities(tokenMatch[3].replace(/<br\s*\/?>/gi, ''));
           for (const ch of text) {
             if (isLineDraw) {
+              const { char: mosaicChar, mask } = zdfLineDrawToCharAndMask(ch);
               row.push({
-                char: zdfLineDrawToChar(ch),
+                char: mosaicChar,
                 fg,
                 bg,
                 isGraphic: true,
+                mosaicMask: mask,
               });
             } else {
               row.push(createCell(ch, fg, bg));

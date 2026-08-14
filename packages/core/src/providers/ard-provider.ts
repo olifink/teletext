@@ -5,7 +5,7 @@ import { normalizeTeletextColor } from '../models/colors';
 import { TELETEXT_COLUMNS, TELETEXT_ROWS, type TeletextPage } from '../models/page';
 import type { BroadcasterInfo, ProviderRequestOptions } from '../models/provider';
 import { decodeHtmlEntities, stripHtmlTags } from '../parser/html-sanitizer';
-import { ardGraphicToChar } from '../parser/mosaic';
+import { ardGraphicToCharAndMask } from '../parser/mosaic';
 import { parsePageNumber } from '../parser/link-extractor';
 
 export class ARDProvider extends BaseProvider {
@@ -96,12 +96,13 @@ export class ARDProvider extends BaseProvider {
           if (tokenMatch[1]) {
             // <img src="...">
             const imgSrc = tokenMatch[2];
-            const mosaicChar = ardGraphicToChar(imgSrc);
+            const { char: mosaicChar, mask } = ardGraphicToCharAndMask(imgSrc);
             row.push({
               char: mosaicChar,
               fg,
               bg,
               isGraphic: true,
+              mosaicMask: mask,
             });
           } else if (tokenMatch[3]) {
             // <a ...>...</a>

@@ -5,7 +5,7 @@ import { normalizeTeletextColor } from '../models/colors';
 import { TELETEXT_COLUMNS, TELETEXT_ROWS, type TeletextPage } from '../models/page';
 import type { BroadcasterInfo, ProviderRequestOptions } from '../models/provider';
 import { decodeHtmlEntities, stripHtmlTags } from '../parser/html-sanitizer';
-import { hrGraphicToChar } from '../parser/mosaic';
+import { hrGraphicToCharAndMask } from '../parser/mosaic';
 
 export class HRProvider extends BaseProvider {
   public readonly id = 'hr';
@@ -116,12 +116,13 @@ export class HRProvider extends BaseProvider {
       // Check if this span is a mosaic block graphics class
       const graphicClass = classes.find(c => /^g1c/i.test(c));
       if (graphicClass) {
-        const mosaic = hrGraphicToChar(graphicClass);
+        const { char: mosaicChar, mask } = hrGraphicToCharAndMask(graphicClass);
         row.push({
-          char: mosaic,
+          char: mosaicChar,
           fg: curFg,
           bg: curBg,
           isGraphic: true,
+          mosaicMask: mask,
         });
       } else {
         // Text characters

@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test';
 import { normalizeTeletextColor, TELETEXT_COLORS } from '../src/models/colors';
 import { decodeHtmlEntities, stripHtmlTags } from '../src/parser/html-sanitizer';
-import { ardGraphicToChar, hrGraphicToChar, mosaicBitmapToChar } from '../src/parser/mosaic';
+import {
+  ardGraphicToChar,
+  ardGraphicToCharAndMask,
+  hrGraphicToChar,
+  hrGraphicToCharAndMask,
+  mosaicBitmapToChar,
+  teletextCodeToMask,
+  zdfLineDrawToCharAndMask,
+} from '../src/parser/mosaic';
 import { annotateGridWithLinks, extractFastTextFromGrid, extractPageLinks, isValidPageNumber } from '../src/parser/link-extractor';
 import { createEmptyGrid, writeTextToGridRow } from '../src/parser/grid';
 
@@ -32,22 +40,43 @@ describe('Teletext Colors & Sanitizer', () => {
   });
 });
 
-describe('Teletext Mosaic / Block Graphics', () => {
-  it('maps mosaic bitmaps to block characters', () => {
+describe('Teletext Mosaic / Block Graphics (ETS 300 706)', () => {
+  it('maps mosaic bitmaps to standard block characters and sextants', () => {
     expect(mosaicBitmapToChar(0)).toBe(' ');
+    expect(mosaicBitmapToChar(15)).toBe('▀');
+    expect(mosaicBitmapToChar(48)).toBe('▄');
     expect(mosaicBitmapToChar(63)).toBe('█');
-    const char1 = mosaicBitmapToChar(1);
-    expect(char1.length).toBeGreaterThan(0);
+    expect(mosaicBitmapToChar(1)).toBe('\u{1FB00}');
+    expect(mosaicBitmapToChar(12)).toBe('\u{1FB0B}');
   });
 
-  it('decodes ARD image graphic names', () => {
-    const char = ardGraphicToChar('img/g1w70.gif');
-    expect(typeof char).toBe('string');
+  it('converts 7-bit Teletext character codes to 6-bit mosaic masks', () => {
+    expect(teletextCodeToMask(0x20)).toBe(0);
+    expect(teletextCodeToMask(0x70)).toBe(48); // Bottom-left + Bottom-right
+    expect(teletextCodeToMask(0x2c)).toBe(12); // Mid-left + Mid-right
+    expect(teletextCodeToMask(0x7f)).toBe(63); // Full block
+  });
+
+  it('decodes ARD image graphic names and masks', () => {
+    const res70 = ardGraphicToCharAndMask('img/g1w70.gif');
+    expect(res70.mask).toBe(48);
+    expect(res70.char).toBe('▄');
+
+    const res2c = ardGraphicToCharAndMask('img/g1w2c.gif');
+    expect(res2c.mask).toBe(12);
+    expect(res2c.char).toBe('\u{1FB0B}');
+  });
+
+  it('decodes ZDF linedraw characters to masks', () => {
+    const res = zdfLineDrawToCharAndMask('/');
+    expect(res.mask).toBe(15);
+    expect(res.char).toBe('▀');
   });
 
   it('decodes HR graphic class names', () => {
-    const char = hrGraphicToChar('g1c47c');
-    expect(typeof char).toBe('string');
+    const res = hrGraphicToCharAndMask('g1c47c');
+    expect(res.mask).toBe(60); // 0x7c -> (0x1c) | (0x20) = 0x3c = 60
+    expect(typeof res.char).toBe('string');
   });
 });
 

@@ -20,6 +20,8 @@ export interface TeletextCell {
   conceal?: boolean;
   /** Whether character represents a Teletext block/mosaic graphic */
   isGraphic?: boolean;
+  /** 6-bit sub-pixel mask for 2x3 sextant mosaic (0..63) */
+  mosaicMask?: number;
   /** 3-digit page number destination if this cell is an active hyperlink */
   link?: number;
 }
@@ -43,6 +45,20 @@ export function createCell(char: string, fg: TeletextColor = 'white', bg: Telete
     char: char || ' ',
     fg,
     bg,
+    link,
+  };
+}
+
+/**
+ * Helper to create a graphic cell with 6-bit mosaic mask
+ */
+export function createGraphicCell(char: string, fg: TeletextColor, bg: TeletextColor, mosaicMask: number, link?: number): TeletextCell {
+  return {
+    char,
+    fg,
+    bg,
+    isGraphic: true,
+    mosaicMask,
     link,
   };
 }
