@@ -43,9 +43,11 @@ describe('Teletext Colors & Sanitizer', () => {
 describe('Teletext Mosaic / Block Graphics (ETS 300 706)', () => {
   it('maps mosaic bitmaps to standard block characters and sextants', () => {
     expect(mosaicBitmapToChar(0)).toBe(' ');
-    expect(mosaicBitmapToChar(15)).toBe('▀');
-    expect(mosaicBitmapToChar(48)).toBe('▄');
-    expect(mosaicBitmapToChar(63)).toBe('█');
+    expect(mosaicBitmapToChar(15)).toBe('\u{1FB0E}'); // 🬎 BLOCK SEXTANT-1234
+    expect(mosaicBitmapToChar(48)).toBe('\u{1FB2D}'); // 🬭 BLOCK SEXTANT-56
+    expect(mosaicBitmapToChar(21)).toBe('▌'); // LEFT HALF BLOCK
+    expect(mosaicBitmapToChar(42)).toBe('▐'); // RIGHT HALF BLOCK
+    expect(mosaicBitmapToChar(63)).toBe('█'); // FULL BLOCK
     expect(mosaicBitmapToChar(1)).toBe('\u{1FB00}');
     expect(mosaicBitmapToChar(12)).toBe('\u{1FB0B}');
   });
@@ -60,7 +62,7 @@ describe('Teletext Mosaic / Block Graphics (ETS 300 706)', () => {
   it('decodes ARD image graphic names and masks', () => {
     const res70 = ardGraphicToCharAndMask('img/g1w70.gif');
     expect(res70.mask).toBe(48);
-    expect(res70.char).toBe('▄');
+    expect(res70.char).toBe('\u{1FB2D}'); // 🬭
 
     const res2c = ardGraphicToCharAndMask('img/g1w2c.gif');
     expect(res2c.mask).toBe(12);
@@ -70,7 +72,7 @@ describe('Teletext Mosaic / Block Graphics (ETS 300 706)', () => {
   it('decodes ZDF linedraw characters to masks', () => {
     const res = zdfLineDrawToCharAndMask('/');
     expect(res.mask).toBe(15);
-    expect(res.char).toBe('▀');
+    expect(res.char).toBe('\u{1FB0E}'); // 🬎
   });
 
   it('decodes HR graphic class names', () => {

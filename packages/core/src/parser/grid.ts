@@ -40,6 +40,7 @@ export function normalizeGrid(rows: TeletextCell[][], defaultFg: TeletextColor =
           flash: cell.flash,
           conceal: cell.conceal,
           isGraphic: cell.isGraphic,
+          mosaicMask: cell.mosaicMask,
           link: cell.link,
         });
       } else {

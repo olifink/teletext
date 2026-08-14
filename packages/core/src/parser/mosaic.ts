@@ -2,9 +2,9 @@
  * Teletext Block Graphics / Mosaic (ETS 300 706 G1 Set) Handler
  *
  * Each Teletext character cell contains a 2x3 grid of 6 sub-pixels:
- *   Bit 0 (0x01): Top-Left     Bit 1 (0x02): Top-Right
- *   Bit 2 (0x04): Middle-Left  Bit 3 (0x08): Middle-Right
- *   Bit 4 (0x10): Bottom-Left  Bit 5 (0x20): Bottom-Right
+ *   Bit 0 (0x01): Top-Left (1)      Bit 1 (0x02): Top-Right (2)
+ *   Bit 2 (0x04): Middle-Left (3)   Bit 3 (0x08): Middle-Right (4)
+ *   Bit 4 (0x10): Bottom-Left (5)   Bit 5 (0x20): Bottom-Right (6)
  *
  * In ETS 300 706 Table 35, 7-bit character codes (0x20..0x7F) map as:
  *   b1 (bit 0) -> Bit 0 (Top-Left)
@@ -18,75 +18,75 @@
  */
 
 /**
- * 64-entry mapping table for all 6-bit mosaic bitmaps (0..63)
+ * Exact 64-entry mapping table for all 6-bit mosaic bitmaps (0..63)
  * Maps masks to standard Unicode 13.0 Symbols for Legacy Computing (U+1FB00..U+1FB3B),
- * plus standard Block Elements (U+2580, U+2584, U+2588) and Space (U+0020).
+ * plus standard Block Elements (U+258C, U+2590, U+2588) and Space (U+0020).
  */
 export const SEXTANT_UNICODE_MAP: string[] = [
-  ' ',         // 000000 (0):  Space
-  '\u{1FB00}', // 000001 (1):  🬀
-  '\u{1FB01}', // 000010 (2):  🬁
-  '\u{1FB02}', // 000011 (3):  🬂
-  '\u{1FB03}', // 000100 (4):  🬃
-  '\u{1FB04}', // 000101 (5):  🬄
-  '\u{1FB05}', // 000110 (6):  🬅
-  '\u{1FB06}', // 000111 (7):  🬆
-  '\u{1FB07}', // 001000 (8):  🬇
-  '\u{1FB08}', // 001001 (9):  🬈
-  '\u{1FB09}', // 001010 (10): 🬉
-  '\u{1FB0A}', // 001011 (11): 🬊
-  '\u{1FB0B}', // 001100 (12): 🬋
-  '\u{1FB0C}', // 001101 (13): 🬌
-  '\u{1FB0D}', // 001110 (14): 🬍
-  '\u{2580}',  // 001111 (15): ▀ (Upper Half Block)
-  '\u{1FB0E}', // 010000 (16): 🬎
-  '\u{1FB0F}', // 010001 (17): 🬏
-  '\u{1FB10}', // 010010 (18): 🬐
-  '\u{1FB11}', // 010011 (19): 🬑
-  '\u{1FB12}', // 010100 (20): 🬒
-  '\u{1FB13}', // 010101 (21): 🬓
-  '\u{1FB14}', // 010110 (22): 🬔
-  '\u{1FB15}', // 010111 (23): 🬕
-  '\u{1FB16}', // 011000 (24): 🬖
-  '\u{1FB17}', // 011001 (25): 🬗
-  '\u{1FB18}', // 011010 (26): 🬘
-  '\u{1FB19}', // 011011 (27): 🬙
-  '\u{1FB1A}', // 011100 (28): 🬚
-  '\u{1FB1B}', // 011101 (29): 🬛
-  '\u{1FB1C}', // 011110 (30): 🬜
-  '\u{1FB1D}', // 011111 (31): 🬝
-  '\u{1FB1E}', // 100000 (32): 🬞
-  '\u{1FB1F}', // 100001 (33): 🬟
-  '\u{1FB20}', // 100010 (34): 🬠
-  '\u{1FB21}', // 100011 (35): 🬡
-  '\u{1FB22}', // 100100 (36): 🬢
-  '\u{1FB23}', // 100101 (37): 🬣
-  '\u{1FB24}', // 100110 (38): 🬤
-  '\u{1FB25}', // 100111 (39): 🬥
-  '\u{1FB26}', // 101000 (40): 🬦
-  '\u{1FB27}', // 101001 (41): 🬧
-  '\u{1FB28}', // 101010 (42): 🬨
-  '\u{1FB29}', // 101011 (43): 🬩
-  '\u{1FB2A}', // 101100 (44): 🬪
-  '\u{1FB2B}', // 101101 (45): 🬫
-  '\u{1FB2C}', // 101110 (46): 🬬
-  '\u{1FB2D}', // 101111 (47): 🬭
-  '\u{2584}',  // 110000 (48): ▄ (Lower Half Block)
-  '\u{1FB2E}', // 110001 (49): 🬮
-  '\u{1FB2F}', // 110010 (50): 🬯
-  '\u{1FB30}', // 110011 (51): 🬰
-  '\u{1FB31}', // 110100 (52): 🬱
-  '\u{1FB32}', // 110101 (53): 🬲
-  '\u{1FB33}', // 110110 (54): 🬳
-  '\u{1FB34}', // 110111 (55): 🬴
-  '\u{1FB35}', // 111000 (56): 🬵
-  '\u{1FB36}', // 111001 (57): 🬶
-  '\u{1FB37}', // 111010 (58): 🬷
-  '\u{1FB38}', // 111011 (59): 🬸
-  '\u{1FB39}', // 111100 (60): 🬹
-  '\u{1FB3A}', // 111101 (61): 🬺
-  '\u{1FB3B}', // 111110 (62): 🬻
-  '\u{2588}',  // 111111 (63): █ (Full Block)
+  ' ',         // 00 (bin 000000):   <- SPACE
+  '\u{1FB00}', // 01 (bin 000001): 🬀 <- BLOCK SEXTANT-1
+  '\u{1FB01}', // 02 (bin 000010): 🬁 <- BLOCK SEXTANT-2
+  '\u{1FB02}', // 03 (bin 000011): 🬂 <- BLOCK SEXTANT-12
+  '\u{1FB03}', // 04 (bin 000100): 🬃 <- BLOCK SEXTANT-3
+  '\u{1FB04}', // 05 (bin 000101): 🬄 <- BLOCK SEXTANT-13
+  '\u{1FB05}', // 06 (bin 000110): 🬅 <- BLOCK SEXTANT-23
+  '\u{1FB06}', // 07 (bin 000111): 🬆 <- BLOCK SEXTANT-123
+  '\u{1FB07}', // 08 (bin 001000): 🬇 <- BLOCK SEXTANT-4
+  '\u{1FB08}', // 09 (bin 001001): 🬈 <- BLOCK SEXTANT-14
+  '\u{1FB09}', // 10 (bin 001010): 🬉 <- BLOCK SEXTANT-24
+  '\u{1FB0A}', // 11 (bin 001011): 🬊 <- BLOCK SEXTANT-124
+  '\u{1FB0B}', // 12 (bin 001100): 🬋 <- BLOCK SEXTANT-34
+  '\u{1FB0C}', // 13 (bin 001101): 🬌 <- BLOCK SEXTANT-134
+  '\u{1FB0D}', // 14 (bin 001110): 🬍 <- BLOCK SEXTANT-234
+  '\u{1FB0E}', // 15 (bin 001111): 🬎 <- BLOCK SEXTANT-1234
+  '\u{1FB0F}', // 16 (bin 010000): 🬏 <- BLOCK SEXTANT-5
+  '\u{1FB10}', // 17 (bin 010001): 🬐 <- BLOCK SEXTANT-15
+  '\u{1FB11}', // 18 (bin 010010): 🬑 <- BLOCK SEXTANT-25
+  '\u{1FB12}', // 19 (bin 010011): 🬒 <- BLOCK SEXTANT-125
+  '\u{1FB13}', // 20 (bin 010100): 🬓 <- BLOCK SEXTANT-35
+  '\u{258C}',  // 21 (bin 010101): ▌ <- LEFT HALF BLOCK
+  '\u{1FB14}', // 22 (bin 010110): 🬔 <- BLOCK SEXTANT-235
+  '\u{1FB15}', // 23 (bin 010111): 🬕 <- BLOCK SEXTANT-1235
+  '\u{1FB16}', // 24 (bin 011000): 🬖 <- BLOCK SEXTANT-45
+  '\u{1FB17}', // 25 (bin 011001): 🬗 <- BLOCK SEXTANT-145
+  '\u{1FB18}', // 26 (bin 011010): 🬘 <- BLOCK SEXTANT-245
+  '\u{1FB19}', // 27 (bin 011011): 🬙 <- BLOCK SEXTANT-1245
+  '\u{1FB1A}', // 28 (bin 011100): 🬚 <- BLOCK SEXTANT-345
+  '\u{1FB1B}', // 29 (bin 011101): 🬛 <- BLOCK SEXTANT-1345
+  '\u{1FB1C}', // 30 (bin 011110): 🬜 <- BLOCK SEXTANT-2345
+  '\u{1FB1D}', // 31 (bin 011111): 🬝 <- BLOCK SEXTANT-12345
+  '\u{1FB1E}', // 32 (bin 100000): 🬞 <- BLOCK SEXTANT-6
+  '\u{1FB1F}', // 33 (bin 100001): 🬟 <- BLOCK SEXTANT-16
+  '\u{1FB20}', // 34 (bin 100010): 🬠 <- BLOCK SEXTANT-26
+  '\u{1FB21}', // 35 (bin 100011): 🬡 <- BLOCK SEXTANT-126
+  '\u{1FB22}', // 36 (bin 100100): 🬢 <- BLOCK SEXTANT-36
+  '\u{1FB23}', // 37 (bin 100101): 🬣 <- BLOCK SEXTANT-136
+  '\u{1FB24}', // 38 (bin 100110): 🬤 <- BLOCK SEXTANT-236
+  '\u{1FB25}', // 39 (bin 100111): 🬥 <- BLOCK SEXTANT-1236
+  '\u{1FB26}', // 40 (bin 101000): 🬦 <- BLOCK SEXTANT-46
+  '\u{1FB27}', // 41 (bin 101001): 🬧 <- BLOCK SEXTANT-146
+  '\u{2590}',  // 42 (bin 101010): ▐ <- RIGHT HALF BLOCK
+  '\u{1FB28}', // 43 (bin 101011): 🬨 <- BLOCK SEXTANT-1246
+  '\u{1FB29}', // 44 (bin 101100): 🬩 <- BLOCK SEXTANT-346
+  '\u{1FB2A}', // 45 (bin 101101): 🬪 <- BLOCK SEXTANT-1346
+  '\u{1FB2B}', // 46 (bin 101110): 🬫 <- BLOCK SEXTANT-2346
+  '\u{1FB2C}', // 47 (bin 101111): 🬬 <- BLOCK SEXTANT-12346
+  '\u{1FB2D}', // 48 (bin 110000): 🬭 <- BLOCK SEXTANT-56
+  '\u{1FB2E}', // 49 (bin 110001): 🬮 <- BLOCK SEXTANT-156
+  '\u{1FB2F}', // 50 (bin 110010): 🬯 <- BLOCK SEXTANT-256
+  '\u{1FB30}', // 51 (bin 110011): 🬰 <- BLOCK SEXTANT-1256
+  '\u{1FB31}', // 52 (bin 110100): 🬱 <- BLOCK SEXTANT-356
+  '\u{1FB32}', // 53 (bin 110101): 🬲 <- BLOCK SEXTANT-1356
+  '\u{1FB33}', // 54 (bin 110110): 🬳 <- BLOCK SEXTANT-2356
+  '\u{1FB34}', // 55 (bin 110111): 🬴 <- BLOCK SEXTANT-12356
+  '\u{1FB35}', // 56 (bin 111000): 🬵 <- BLOCK SEXTANT-456
+  '\u{1FB36}', // 57 (bin 111001): 🬶 <- BLOCK SEXTANT-1456
+  '\u{1FB37}', // 58 (bin 111010): 🬷 <- BLOCK SEXTANT-2456
+  '\u{1FB38}', // 59 (bin 111011): 🬸 <- BLOCK SEXTANT-12456
+  '\u{1FB39}', // 60 (bin 111100): 🬹 <- BLOCK SEXTANT-3456
+  '\u{1FB3A}', // 61 (bin 111101): 🬺 <- BLOCK SEXTANT-13456
+  '\u{1FB3B}', // 62 (bin 111110): 🬻 <- BLOCK SEXTANT-23456
+  '\u{2588}',  // 63 (bin 111111): █ <- FULL BLOCK
 ];
 
 /**
