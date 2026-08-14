@@ -1,0 +1,20 @@
+{
+  "name": "@teletext/core",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "teletext": "src/cli/cli.ts"
+  },
+  "scripts": {
+    "dev": "bun --watch src/server/server.ts",
+    "server": "bun src/server/server.ts",
+    "cli": "bun src/cli/cli.ts",
+    "test": "bun test",
+    "build": "bun build src/index.ts --outdir dist --target node"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

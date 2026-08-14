@@ -1,0 +1,122 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.subpage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-wrap: wrap;
+}
+
+.subpage-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .sub-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: var(--border-active);
+      color: var(--text-primary);
+    }
+  }
+
+  .subpage-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+.subpage-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .pill-btn {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--text-primary);
+      border-color: var(--border-active);
+    }
+
+    &.active {
+      background-color: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+  }
+}
+
+.auto-rotate-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .rotate-toggle-btn {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+
+    &.active {
+      color: var(--tt-green);
+      border-color: rgba(0, 255, 34, 0.3);
+    }
+  }
+
+  .progress-track {
+    width: 60px;
+    height: 4px;
+    background-color: var(--bg-surface);
+    border-radius: 2px;
+    overflow: hidden;
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--tt-green);
+      transition: width 0.1s linear;
+      box-shadow: 0 0 4px rgba(0, 255, 34, 0.6);
+    }
+  }
+}

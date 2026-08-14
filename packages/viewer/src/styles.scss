@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Videotext Modern Design System & Global Styles
+   ========================================================================== */
+
+:root {
+  /* UI Colors */
+  --bg-app: #08090d;
+  --bg-surface: #12141c;
+  --bg-surface-elevated: #1a1e2a;
+  --bg-surface-glass: rgba(26, 30, 42, 0.75);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.18);
+  
+  --text-primary: #f0f2f5;
+  --text-secondary: #9da3b4;
+  --text-muted: #62687a;
+  --accent: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.35);
+
+  /* Teletext Standard 8-Color Palette */
+  --tt-black: #000000;
+  --tt-red: #ff1a1a;
+  --tt-green: #00ff22;
+  --tt-yellow: #ffee00;
+  --tt-blue: #1a33ff;
+  --tt-magenta: #ff00ee;
+  --tt-cyan: #00f0ff;
+  --tt-white: #ffffff;
+
+  /* CRT Filter Variables */
+  --crt-scanline-opacity: 0.18;
+  --crt-glow-radius: 4px;
+  --crt-curvature: 8px;
+
+  /* Typography */
+  --font-teletext: 'VT323', 'Courier New', monospace;
+  --font-code: 'Fira Code', monospace;
+  --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  user-select: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-active);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Button & Interactive Reset */
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  color: inherit;
+}
+
+/* Teletext Color Utility Classes */
+.fg-black   { color: var(--tt-black) !important; }
+.fg-red     { color: var(--tt-red) !important; }
+.fg-green   { color: var(--tt-green) !important; }
+.fg-yellow  { color: var(--tt-yellow) !important; }
+.fg-blue    { color: var(--tt-blue) !important; }
+.fg-magenta { color: var(--tt-magenta) !important; }
+.fg-cyan    { color: var(--tt-cyan) !important; }
+.fg-white   { color: var(--tt-white) !important; }
+
+.bg-black   { background-color: var(--tt-black) !important; }
+.bg-red     { background-color: var(--tt-red) !important; }
+.bg-green   { background-color: var(--tt-green) !important; }
+.bg-yellow  { background-color: var(--tt-yellow) !important; }
+.bg-blue    { background-color: var(--tt-blue) !important; }
+.bg-magenta { background-color: var(--tt-magenta) !important; }
+.bg-cyan    { background-color: var(--tt-cyan) !important; }
+.bg-white   { background-color: var(--tt-white) !important; }
+
+/* CRT Scanline & Phosphor Glow Keyframes */
+@keyframes crt-flicker {
+  0% { opacity: 0.985; }
+  50% { opacity: 1; }
+  100% { opacity: 0.985; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes blink-teletext {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.blink-char {
+  animation: blink-teletext 1s infinite steps(1, start);
+}

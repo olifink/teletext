@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.fasttext-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 6px 0;
+}
+
+.ft-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-teletext);
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+
+  .ft-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  .ft-key {
+    font-family: var(--font-code);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  &.ft-red {
+    color: var(--tt-red);
+    .ft-indicator { background-color: var(--tt-red); }
+    &:hover:not(:disabled) {
+      background-color: rgba(255, 26, 26, 0.15);
+      border-color: var(--tt-red);
+      box-shadow: 0 0 12px rgba(255, 26, 26, 0.3);
+    }
+  }
+
+  &.ft-green {
+    color: var(--tt-green);
+    .ft-indicator { background-color: var(--tt-green); }
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 255, 34, 0.15);
+      border-color: var(--tt-green);
+      box-shadow: 0 0 12px rgba(0, 255, 34, 0.3);
+    }
+  }
+
+  &.ft-yellow {
+    color: var(--tt-yellow);
+    .ft-indicator { background-color: var(--tt-yellow); }
+    &:hover:not(:disabled) {
+      background-color: rgba(255, 238, 0, 0.15);
+      border-color: var(--tt-yellow);
+      box-shadow: 0 0 12px rgba(255, 238, 0, 0.3);
+    }
+  }
+
+  &.ft-blue {
+    color: var(--tt-cyan);
+    .ft-indicator { background-color: var(--tt-cyan); }
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 240, 255, 0.15);
+      border-color: var(--tt-cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

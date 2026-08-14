@@ -1,0 +1,98 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.bookmarks-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.star-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: var(--bg-surface-elevated);
+    color: var(--tt-yellow);
+    border-color: var(--tt-yellow);
+  }
+
+  &.is-bookmarked {
+    color: var(--tt-yellow);
+    border-color: rgba(255, 238, 0, 0.4);
+    background-color: rgba(255, 238, 0, 0.08);
+    box-shadow: 0 0 10px rgba(255, 238, 0, 0.2);
+  }
+}
+
+.bookmarks-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.bookmark-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+
+  .chip-channel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .chip-page {
+    font-family: var(--font-teletext);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--tt-yellow);
+  }
+
+  .chip-label {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    border-color: var(--border-active);
+  }
+
+  &.active {
+    background-color: var(--bg-surface-elevated);
+    border-color: var(--tt-yellow);
+    color: var(--text-primary);
+    box-shadow: 0 0 8px rgba(255, 238, 0, 0.2);
+  }
+}

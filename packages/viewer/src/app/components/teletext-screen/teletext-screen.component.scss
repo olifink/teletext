@@ -1,0 +1,255 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.crt-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 4 / 3;
+  position: relative;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+}
+
+/* Outer Television Bezel */
+.crt-bezel {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1b1e26 0%, #0d0e14 100%);
+  border: 10px solid #1f232d;
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 15px rgba(0, 0, 0, 0.9),
+    0 12px 35px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    border-width: 4px;
+    border-radius: 8px;
+    padding: 4px;
+  }
+}
+
+/* CRT Screen Surface */
+.crt-screen {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Teletext 24-Row Matrix */
+.teletext-matrix {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  font-family: var(--font-teletext);
+  line-height: 1;
+  font-size: clamp(14px, 2.2vw, 26px);
+  user-select: none;
+}
+
+.teletext-row {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 0;
+  width: 100%;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.teletext-cell {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0;
+  position: relative;
+  transition: background-color 0.1s ease, color 0.1s ease;
+
+  &.cell-link {
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      filter: brightness(1.35) drop-shadow(0 0 4px currentColor);
+      outline: 1px dashed rgba(255, 255, 255, 0.6);
+      z-index: 10;
+    }
+  }
+
+  &.is-graphic {
+    font-size: 1.1em;
+  }
+
+  &.double-height {
+    transform: scaleY(2);
+    transform-origin: top center;
+  }
+}
+
+/* Top Keypad Buffer Overlay */
+.keypad-buffer-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 30;
+  background-color: #000000;
+  border: 2px solid var(--tt-yellow);
+  padding: 4px 10px;
+  font-family: var(--font-teletext);
+  font-size: 1.5rem;
+  color: var(--tt-yellow);
+  display: flex;
+  gap: 8px;
+  box-shadow: 0 0 10px rgba(255, 238, 0, 0.4);
+  animation: pulse-glow 1s infinite alternate;
+
+  .buffer-label {
+    color: var(--tt-white);
+  }
+}
+
+/* CRT Mode Effects */
+.mode-crt {
+  .crt-screen {
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.95);
+  }
+
+  .teletext-cell {
+    text-shadow: 0 0 2px currentColor;
+  }
+
+  .crt-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.28) 3px,
+      rgba(0, 0, 0, 0.28) 4px
+    );
+  }
+
+  .crt-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 21;
+    background: radial-gradient(
+      circle at center,
+      transparent 60%,
+      rgba(0, 0, 0, 0.4) 90%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+  }
+
+  .crt-flicker {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 22;
+    background: rgba(255, 255, 255, 0.015);
+    animation: crt-flicker 0.15s infinite;
+  }
+}
+
+/* Clean Mode (Sharp & Flat) */
+.mode-clean {
+  .crt-bezel {
+    background: #10121a;
+    border: 2px solid var(--border-subtle);
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .teletext-cell {
+    text-shadow: none;
+  }
+}
+
+/* Error Viewport */
+.error-viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  font-family: var(--font-teletext);
+  font-size: 1.4rem;
+  text-align: center;
+  gap: 16px;
+
+  .error-header {
+    font-size: 1.8rem;
+    padding: 4px 12px;
+  }
+
+  .error-detail {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
+
+  .retry-button {
+    margin-top: 12px;
+    padding: 8px 20px;
+    background-color: var(--tt-blue);
+    color: var(--tt-white);
+    border: 1px solid var(--tt-white);
+    font-family: var(--font-teletext);
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--tt-yellow);
+      color: var(--tt-black);
+    }
+  }
+}
+
+/* Loading Viewport */
+.loading-viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-teletext);
+  font-size: 1.6rem;
+
+  .loading-pulse {
+    animation: blink-teletext 0.6s infinite steps(1, start);
+  }
+}

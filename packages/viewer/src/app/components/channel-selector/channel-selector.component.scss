@@ -1,0 +1,57 @@
+:host {
+  display: block;
+}
+
+.channel-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 4px;
+  overflow-x: auto;
+}
+
+.channel-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--tt-green);
+    box-shadow: 0 0 6px rgba(0, 255, 34, 0.7);
+
+    &.offline {
+      background-color: var(--tt-yellow);
+      box-shadow: 0 0 6px rgba(255, 238, 0, 0.7);
+    }
+  }
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &.active {
+    background-color: var(--bg-surface-elevated);
+    color: #ffffff;
+    border: 1px solid var(--border-active);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+    .channel-name {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+  }
+}
