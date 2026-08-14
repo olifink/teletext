@@ -82,3 +82,86 @@ The solution consists of two primary components:
 * **Privacy & Security**: Zero telemetry, no third-party tracking scripts, local storage only.
 * **Performance**: Sub-100ms render pipeline for parsed page signals into the Angular Signal grid state.
 * **Resilience**: Graceful fallbacks when a broadcaster web portal modifies its markup structure or experiences downtime.
+
+---
+
+Here is the curated list of target German Videotext services and their public URLs to include in the agent’s configuration or target provider registry.
+
+---
+
+## 1. National Broadcasters (Primary Targets)
+
+### **ARD Text (Das Erste)**
+
+* **Desktop / Web Endpoint:** `[https://www.ard-text.de/](https://www.ard-text.de/)`
+* **Mobile / Lightweight Portal:** `[https://www.ard-text.de/mobil](https://www.ard-text.de/mobil)`
+* **URL Structure Pattern:**
+* `[https://www.ard-text.de/index.php?page=100](https://www.ard-text.de/index.php?page=100)` (Page 100 Main News)
+* `[https://www.ard-text.de/index.php?page=100&sub=1](https://www.ard-text.de/index.php?page=100&sub=1)` (Sub-pages)
+
+
+
+### **ZDF Text**
+
+* **Desktop / Web Endpoint:** `[https://teletext.zdf.de/](https://teletext.zdf.de/)`
+* **URL Structure Pattern:**
+* `[https://teletext.zdf.de/teletext/zdf/seiten/100.html](https://teletext.zdf.de/teletext/zdf/seiten/100.html)`
+* `[https://teletext.zdf.de/teletext/zdf/seiten/100_1.html](https://teletext.zdf.de/teletext/zdf/seiten/100_1.html)` (Sub-page format)
+
+
+
+---
+
+## 2. Regional Public Broadcasters (Third Programs / ARD Network)
+
+### **HR Text (Hessischer Rundfunk)**
+
+* **Web Portal:** `[https://www.hr-text.de/](https://www.hr-text.de/)`
+* **URL Pattern:** `[https://www.hr-text.de/index.php?page=100](https://www.hr-text.de/index.php?page=100)`
+
+### **WDR Text (Westdeutscher Rundfunk)**
+
+* **Web Portal:** `[https://www.wdrtext.de/](https://www.wdrtext.de/)`
+* **Mobile / Clean HTML Endpoint:** `[https://mobiltext.wdr.de/](https://mobiltext.wdr.de/)`
+* **URL Pattern:** `[https://mobiltext.wdr.de/100.html](https://mobiltext.wdr.de/100.html)`
+
+### **NDR Text (Norddeutscher Rundfunk)**
+
+* **Web Portal:** `[https://www.ndr.de/fernsehen/teletext/](https://www.ndr.de/fernsehen/teletext/)`
+* **Mobile / Clean Endpoint:** `[https://mobiltext.ndr.de/](https://mobiltext.ndr.de/)`
+* **URL Pattern:** `[https://mobiltext.ndr.de/100.html](https://mobiltext.ndr.de/100.html)`
+
+### **SWR Text (Südwestrundfunk)**
+
+* **Web Portal:** `[https://www.swrtext.de/](https://www.swrtext.de/)`
+* **URL Pattern:** `[https://www.swrtext.de/index.php?page=100](https://www.swrtext.de/index.php?page=100)`
+
+### **MDR Text (Mitteldeutscher Rundfunk)**
+
+* **Web Portal:** `[https://www.mdr.de/teletext/](https://www.mdr.de/teletext/)`
+* **URL Pattern:** `[https://www.mdr.de/teletext/pages/100.html](https://www.mdr.de/teletext/pages/100.html)`
+
+---
+
+## 3. Cultural & Joint Public Broadcasters
+
+### **3sat Text**
+
+* **Web Portal:** `[https://teletext.3sat.de/](https://teletext.3sat.de/)`
+* **URL Pattern:** `[https://teletext.3sat.de/teletext/3sat/seiten/100.html](https://teletext.3sat.de/teletext/3sat/seiten/100.html)`
+
+---
+
+## 4. Commercial Broadcasters (Alternative Endpoints)
+
+### **n-tv Text (Private News Channel)**
+
+* **Direct JSON API Endpoint:** `[https://www.n-tv.de/mediathek/teletext/](https://www.n-tv.de/mediathek/teletext/)`
+* **URL Pattern:** `[https://www.n-tv.de/mediathek/teletext/page/100](https://www.n-tv.de/mediathek/teletext/page/100)` *(Returns raw JSON structures directly without needing heavy HTML scraping)*
+
+---
+
+## Agent Strategy Recommendation
+
+* **Primary Target Candidates for MVP:** `ARD Text` and `ZDF Text` (highest availability, structured page hierarchies).
+* **Cleanest Parsing Target:** Mobile endpoints like `ard-text.de/mobil` or `mobiltext.wdr.de` serve pre-rendered HTML grids with minimal JS overhead, making them ideal targets for fast `Bun`-based scrapers.
