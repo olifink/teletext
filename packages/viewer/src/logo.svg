@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="tvBezel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e222d"/>
+      <stop offset="50%" stop-color="#12141c"/>
+      <stop offset="100%" stop-color="#090a0f"/>
+    </linearGradient>
+
+    <!-- CRT Screen Gradient -->
+    <radialGradient id="crtScreen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a121a"/>
+      <stop offset="85%" stop-color="#050608"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <!-- Yellow Phosphor Glow -->
+    <filter id="glowYellow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Cyan Phosphor Glow -->
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Bezel Container -->
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#tvBezel)" stroke="#2a3040" stroke-width="8"/>
+
+  <!-- Inner CRT Tube Screen -->
+  <rect x="56" y="56" width="400" height="400" rx="64" fill="url(#crtScreen)" stroke="#00f0ff" stroke-width="3" stroke-opacity="0.3"/>
+
+  <!-- CRT Screen Scanline Overlay Effect -->
+  <g opacity="0.12">
+    <line x1="60" y1="80" x2="452" y2="80" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="110" x2="452" y2="110" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="140" x2="452" y2="140" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="170" x2="452" y2="170" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="200" x2="452" y2="200" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="230" x2="452" y2="230" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="260" x2="452" y2="260" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="290" x2="452" y2="290" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="320" x2="452" y2="320" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="350" x2="452" y2="350" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="380" x2="452" y2="380" stroke="#ffffff" stroke-width="2"/>
+    <line x1="60" y1="410" x2="452" y2="410" stroke="#ffffff" stroke-width="2"/>
+  </g>
+
+  <!-- Top Teletext Header Mosaic Elements (Cyan) -->
+  <g fill="#00f0ff" filter="url(#glowCyan)">
+    <!-- Mosaic decorative blocks -->
+    <rect x="96" y="96" width="24" height="20" rx="3"/>
+    <rect x="126" y="96" width="24" height="20" rx="3"/>
+    <rect x="156" y="96" width="24" height="20" rx="3"/>
+
+    <rect x="332" y="96" width="24" height="20" rx="3"/>
+    <rect x="362" y="96" width="24" height="20" rx="3"/>
+    <rect x="392" y="96" width="24" height="20" rx="3"/>
+  </g>
+
+  <!-- Central "100" Teletext Digital Bitmap Glyphs (Yellow) -->
+  <g fill="#ffee00" filter="url(#glowYellow)">
+    <!-- Digit "1" -->
+    <path d="M 128 170 L 164 170 L 164 320 L 128 320 Z M 128 170 L 164 140 L 164 170 Z M 108 320 L 184 320 L 184 344 L 108 344 Z"/>
+
+    <!-- First Digit "0" -->
+    <path d="M 216 140 L 284 140 L 284 344 L 216 344 Z M 244 176 L 256 176 L 256 308 L 244 308 Z" fill-rule="evenodd"/>
+
+    <!-- Second Digit "0" -->
+    <path d="M 316 140 L 384 140 L 384 344 L 316 344 Z M 344 176 L 356 176 L 356 308 L 344 308 Z" fill-rule="evenodd"/>
+  </g>
+
+  <!-- Subtitle "TEXT" in Phosphor White -->
+  <text x="256" y="386" text-anchor="middle" fill="#ffffff" font-family="'VT323', 'Courier New', monospace" font-size="34" font-weight="bold" letter-spacing="8" opacity="0.95">TELETEXT</text>
+
+  <!-- Bottom 4 FastText Color Navigation Bars (Red, Green, Yellow, Blue) -->
+  <g>
+    <!-- Red Button -->
+    <rect x="86" y="416" width="76" height="14" rx="6" fill="#ff1a1a"/>
+    <!-- Green Button -->
+    <rect x="172" y="416" width="76" height="14" rx="6" fill="#00ff22"/>
+    <!-- Yellow Button -->
+    <rect x="258" y="416" width="76" height="14" rx="6" fill="#ffee00"/>
+    <!-- Blue Button -->
+    <rect x="344" y="416" width="76" height="14" rx="6" fill="#1a33ff"/>
+  </g>
+</svg>
