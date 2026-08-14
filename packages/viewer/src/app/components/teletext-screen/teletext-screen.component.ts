@@ -62,7 +62,7 @@ import type { TeletextCell } from '@teletext/core';
                         </span>
                         <span class="visually-hidden">{{ cell.char || ' ' }}</span>
                       } @else {
-                        {{ cell.char || ' ' }}
+                        <span class="char-glyph">{{ cell.char || ' ' }}</span>
                       }
                     </span>
                   }

@@ -1,18 +1,6 @@
-@font-face {
-  font-family: 'teletextregular';
-  src: url('/fonts/teletext.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'teletextlinedrawregular';
-  src: url('/fonts/teletextlinedraw.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* ==========================================================================
+   Videotext Modern Design System & Global Styles
+   ========================================================================== */
 
 :root {
   /* UI Colors */
@@ -44,9 +32,8 @@
   --crt-glow-radius: 4px;
   --crt-curvature: 8px;
 
-  /* Typography */
-  --font-teletext: 'teletextregular', 'VT323', 'Courier New', monospace;
-  --font-teletext-graphics: 'teletextlinedrawregular', monospace;
+  /* Typography: Authentic Retro Bitmap Font */
+  --font-teletext: 'VT323', 'Courier New', monospace;
   --font-code: 'Fira Code', monospace;
   --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }

@@ -68,8 +68,6 @@
   height: 100%;
   background-color: #000000;
   font-family: var(--font-teletext);
-  line-height: 1;
-  font-size: clamp(14px, 2.2vw, 26px);
   user-select: none;
 }
 
@@ -78,21 +76,37 @@
   flex-direction: row;
   flex: 1 1 0;
   width: 100%;
+  height: calc(100% / 24);
   white-space: pre;
   overflow: hidden;
 }
 
 .teletext-cell {
   flex: 1 1 0;
+  width: calc(100% / 40);
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: inherit;
-  font-weight: 700;
-  letter-spacing: 0;
+  font-family: var(--font-teletext);
+  font-weight: 400;
   position: relative;
-  transition: background-color 0.1s ease, color 0.1s ease;
+  overflow: hidden;
+  transition: background-color 0.08s ease, color 0.08s ease;
+
+  .char-glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: clamp(16px, 3.2vh, 32px);
+    line-height: 1;
+    transform: scaleX(1.48);
+    transform-origin: center center;
+    letter-spacing: -0.02em;
+  }
 
   &.cell-link {
     cursor: pointer;
@@ -152,33 +166,47 @@
 /* Top Keypad Buffer Overlay */
 .keypad-buffer-overlay {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 14px;
+  left: 14px;
   z-index: 30;
-  background-color: #000000;
-  border: 2px solid var(--tt-yellow);
-  padding: 4px 10px;
-  font-family: var(--font-teletext);
-  font-size: 1.5rem;
-  color: var(--tt-yellow);
   display: flex;
+  align-items: center;
   gap: 8px;
-  box-shadow: 0 0 10px rgba(255, 238, 0, 0.4);
-  animation: pulse-glow 1s infinite alternate;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--tt-yellow);
+  padding: 4px 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(255, 238, 0, 0.35);
 
   .buffer-label {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
     color: var(--tt-white);
+    letter-spacing: 1px;
+  }
+
+  .buffer-value {
+    font-family: var(--font-teletext);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--tt-yellow);
+    letter-spacing: 2px;
   }
 }
 
-/* CRT Mode Effects */
+/* CRT Mode Effects (Scanlines, Vignette, Phosphor Glow) */
 .mode-crt {
   .crt-screen {
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.95);
+    box-shadow:
+      inset 0 0 40px rgba(0, 0, 0, 0.9),
+      0 0 20px rgba(0, 255, 34, 0.04);
   }
 
   .teletext-cell {
-    text-shadow: 0 0 2px currentColor;
+    text-shadow:
+      0 0 2px currentColor,
+      0 0 5px rgba(255, 255, 255, 0.18);
   }
 
   .crt-scanlines {
