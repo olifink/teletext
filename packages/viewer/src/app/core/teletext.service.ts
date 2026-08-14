@@ -115,6 +115,7 @@ export class TeletextService {
   public readonly keypadBuffer = signal<string>('');
   public readonly isKeypadOpen = signal<boolean>(false);
   public readonly isSearchOpen = signal<boolean>(false);
+  public readonly isTvOnly = signal<boolean>(false);
 
   // Data & Network state
   public readonly pageData = signal<TeletextPage | null>(null);
@@ -296,6 +297,12 @@ export class TeletextService {
     this.autoRotate.set(next);
     this.storage.saveSettings({ ...this.storage.getSettings(), autoRotateSubpages: next });
     this.audio.playKeyClick();
+  }
+
+  public toggleTvOnly(): void {
+    const next = !this.isTvOnly();
+    this.isTvOnly.set(next);
+    this.audio.playChirp();
   }
 
   public toggleSound(): void {

@@ -61,6 +61,18 @@ import { ChannelSelectorComponent } from '../channel-selector/channel-selector.c
           <span class="key-hint">[S]</span>
         </button>
 
+        <!-- TV-Only Mode Toggle -->
+        <button
+          class="action-btn tv-only-toggle"
+          [class.active]="teletext.isTvOnly()"
+          (click)="teletext.toggleTvOnly()"
+          title="TV-Modus: Nur Bildschirm anzeigen [Taste T]"
+        >
+          <span class="btn-icon">📺</span>
+          <span class="btn-text">TV-Modus</span>
+          <span class="key-hint">[T]</span>
+        </button>
+
         <!-- Display Mode Toggle (CRT vs Clean) -->
         <button
           class="action-btn mode-toggle"

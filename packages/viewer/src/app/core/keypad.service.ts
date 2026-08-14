@@ -34,11 +34,13 @@ export class KeypadService {
         return;
       }
 
-      // Escape -> Clear buffer or close modal
+      // Escape -> Close modal, exit TV-only, or clear buffer
       if (key === 'Escape') {
         e.preventDefault();
         if (this.teletext.isSearchOpen()) {
           this.teletext.isSearchOpen.set(false);
+        } else if (this.teletext.isTvOnly()) {
+          this.teletext.isTvOnly.set(false);
         } else {
           this.teletext.pressClear();
         }
@@ -104,6 +106,12 @@ export class KeypadService {
       if (key === 'm' || key === 'M') {
         e.preventDefault();
         this.teletext.toggleDisplayMode();
+        return;
+      }
+
+      if (key === 't' || key === 'T') {
+        e.preventDefault();
+        this.teletext.toggleTvOnly();
         return;
       }
 

@@ -1,16 +1,18 @@
-<div class="app-layout">
-  <!-- Top Navigation & Controls Toolbar -->
-  <app-toolbar></app-toolbar>
+<div class="app-layout" [class.tv-only-mode]="teletext.isTvOnly()">
+  <!-- Top Navigation & Controls Toolbar (Hidden in TV-only) -->
+  @if (!teletext.isTvOnly()) {
+    <app-toolbar></app-toolbar>
 
-  <!-- Mobile Broadcaster Channel Selector (Shown on mobile devices) -->
-  <div class="mobile-channel-strip">
-    <app-channel-selector></app-channel-selector>
-  </div>
+    <!-- Mobile Broadcaster Channel Selector (Shown on mobile devices) -->
+    <div class="mobile-channel-strip">
+      <app-channel-selector></app-channel-selector>
+    </div>
 
-  <!-- Pinned Bookmarks & Favorites Quick Bar -->
-  <div class="bookmarks-strip">
-    <app-bookmarks-bar></app-bookmarks-bar>
-  </div>
+    <!-- Pinned Bookmarks & Favorites Quick Bar -->
+    <div class="bookmarks-strip">
+      <app-bookmarks-bar></app-bookmarks-bar>
+    </div>
+  }
 
   <!-- Main Content Stage -->
   <main class="app-stage">
@@ -20,48 +22,62 @@
         <app-teletext-screen></app-teletext-screen>
       </div>
 
-      <!-- Bottom Fast-Text Color Jump Buttons -->
-      <app-fasttext-bar></app-fasttext-bar>
-
-      <!-- Multi-page Article Carousel & Progress Bar -->
-      <app-subpage-controls></app-subpage-controls>
+      <!-- Bottom Fast-Text Color Jump Buttons & Carousel (Hidden in TV-only) -->
+      @if (!teletext.isTvOnly()) {
+        <app-fasttext-bar></app-fasttext-bar>
+        <app-subpage-controls></app-subpage-controls>
+      }
     </div>
 
-    <!-- Right: Retro TV Remote Keypad & Broadcaster Directory Panel -->
-    <aside
-      class="sidebar-panel"
-      [class.mobile-open]="teletext.isKeypadOpen()"
-    >
-      <div class="sidebar-scroller">
-        <!-- Remote Control Numpad -->
-        <app-keypad></app-keypad>
+    <!-- Right: Retro TV Remote Keypad & Broadcaster Directory Panel (Hidden in TV-only) -->
+    @if (!teletext.isTvOnly()) {
+      <aside
+        class="sidebar-panel"
+        [class.mobile-open]="teletext.isKeypadOpen()"
+      >
+        <div class="sidebar-scroller">
+          <!-- Remote Control Numpad -->
+          <app-keypad></app-keypad>
 
-        <!-- Channel Directory & Featured Links Card -->
-        <div class="channel-info-card">
-          <div class="card-header">
-            <span class="card-title">{{ teletext.currentBroadcaster().name }}</span>
-            <span class="card-desc">{{ teletext.currentBroadcaster().description }}</span>
-          </div>
+          <!-- Channel Directory & Featured Links Card -->
+          <div class="channel-info-card">
+            <div class="card-header">
+              <span class="card-title">{{ teletext.currentBroadcaster().name }}</span>
+              <span class="card-desc">{{ teletext.currentBroadcaster().description }}</span>
+            </div>
 
-          <div class="featured-list">
-            @for (item of teletext.currentBroadcaster().featuredPages; track item.page) {
-              <button
-                class="featured-btn"
-                [class.active]="item.page === teletext.currentPage()"
-                (click)="teletext.goToPage(item.page, 1)"
-              >
-                <span class="f-page">{{ item.page }}</span>
-                <span class="f-label">{{ item.label }}</span>
-                @if (item.category) {
-                  <span class="f-cat">{{ item.category }}</span>
-                }
-              </button>
-            }
+            <div class="featured-list">
+              @for (item of teletext.currentBroadcaster().featuredPages; track item.page) {
+                <button
+                  class="featured-btn"
+                  [class.active]="item.page === teletext.currentPage()"
+                  (click)="teletext.goToPage(item.page, 1)"
+                >
+                  <span class="f-page">{{ item.page }}</span>
+                  <span class="f-label">{{ item.label }}</span>
+                  @if (item.category) {
+                    <span class="f-cat">{{ item.category }}</span>
+                  }
+                </button>
+              }
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    }
   </main>
+
+  <!-- TV-Only Mode Floating Exit Button (discreet overlay in top-right corner) -->
+  @if (teletext.isTvOnly()) {
+    <button
+      class="tv-only-exit-btn"
+      (click)="teletext.toggleTvOnly()"
+      title="TV-Modus beenden [Taste T oder Esc]"
+    >
+      <span class="exit-icon">✕</span>
+      <span class="exit-text">Beenden [T / Esc]</span>
+    </button>
+  }
 
   <!-- Search Modal Dialog -->
   <app-search-dialog></app-search-dialog>

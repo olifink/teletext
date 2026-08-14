@@ -141,6 +141,13 @@
     box-shadow: 0 0 10px rgba(0, 255, 34, 0.2);
   }
 
+  &.tv-only-toggle {
+    &:hover {
+      border-color: var(--tt-yellow);
+      color: var(--tt-yellow);
+    }
+  }
+
   &.icon-only {
     padding: 6px 10px;
     font-size: 1rem;
