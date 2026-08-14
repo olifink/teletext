@@ -1,7 +1,21 @@
+import { join } from 'node:path';
+import { existsSync, statSync } from 'node:fs';
 import { getTeletextPage, listSupportedChannels } from '../providers/provider-registry';
 import { TeletextError } from '../models/provider';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
+
+// Find static directory
+const candidateDirs = [
+  process.env.STATIC_DIR,
+  join(process.cwd(), 'packages/viewer/dist/viewer/browser'),
+  join(process.cwd(), 'dist/viewer/browser'),
+  join(__dirname, '../../../packages/viewer/dist/viewer/browser'),
+  join(__dirname, '../../viewer/dist/viewer/browser'),
+  '/app/dist/viewer/browser',
+].filter(Boolean) as string[];
+
+const STATIC_DIR = candidateDirs.find(d => existsSync(d)) || null;
 
 const corsHeaders: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
@@ -75,9 +89,44 @@ const server = Bun.serve({
       }
     }
 
+    // Static Web Viewer File Serving & SPA Fallback
+    if (STATIC_DIR) {
+      let relativePath = url.pathname;
+      if (relativePath === '/') relativePath = '/index.html';
+
+      const filePath = join(STATIC_DIR, relativePath);
+      if (existsSync(filePath) && !statSync(filePath).isDirectory()) {
+        const file = Bun.file(filePath);
+        const headers: Record<string, string> = { ...corsHeaders };
+
+        // Cache immutable hashed assets
+        if (/\.(js|css|woff2?|png|ico|svg)$/.test(relativePath)) {
+          headers['Cache-Control'] = 'public, max-age=31536000, immutable';
+        } else {
+          headers['Cache-Control'] = 'no-cache';
+        }
+        return new Response(file, { headers });
+      }
+
+      // SPA Fallback to index.html for non-API routes
+      const indexPath = join(STATIC_DIR, 'index.html');
+      if (existsSync(indexPath)) {
+        return new Response(Bun.file(indexPath), {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'text/html; charset=utf-8',
+            'Cache-Control': 'no-cache',
+          },
+        });
+      }
+    }
+
     return Response.json({ error: 'Not Found' }, { status: 404, headers: corsHeaders });
   },
 });
 
-console.log(`📡 Teletext API Server running at http://localhost:${PORT}`);
+console.log(`📡 Teletext Server running at http://localhost:${PORT}`);
+if (STATIC_DIR) {
+  console.log(`🌐 Serving Web Viewer from ${STATIC_DIR}`);
+}
 export default server;

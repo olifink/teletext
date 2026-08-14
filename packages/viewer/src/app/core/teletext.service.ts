@@ -3,7 +3,7 @@ import type { BroadcasterInfo, FastTextLinks, TeletextPage } from '@teletext/cor
 import { AudioService } from './audio.service';
 import { BookmarkItem, StorageService } from './storage.service';
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = typeof window !== 'undefined' ? '/api' : 'http://localhost:3000/api';
 
 const BROADCASTERS: BroadcasterInfo[] = [
   {
